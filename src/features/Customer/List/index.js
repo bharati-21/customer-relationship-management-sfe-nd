@@ -1,11 +1,12 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { View, Text } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Container from "../../../components/Container";
 import List from "../../../components/List";
 import { getRegions } from "../../../utilities/regions";
 import { getUserStates } from "../../../utilities/userStates";
 import { customerListStyles } from "./styles";
+import * as actions from "../reducers";
 
 const styles = customerListStyles();
 
@@ -19,12 +20,12 @@ const CustomerListItem = ({ listItem: customer }) => {
 	return (
 		<View>
 			<View style={styles.infoContainer}>
-				<Text style={styles.boldText}>ID:</Text>
-				<Text>{customer.id}</Text>
+				<Text style={styles.boldText}>First Name:</Text>
+				<Text>{customer.firstName}</Text>
 			</View>
 			<View style={styles.infoContainer}>
-				<Text style={styles.boldText}>Name:</Text>
-				<Text>{`${customer.firstName} ${customer.lastName}`}</Text>
+				<Text style={styles.boldText}>Last Name:</Text>
+				<Text>{customer.lastName}</Text>
 			</View>
 			<View style={styles.infoContainer}>
 				<Text style={styles.boldText}>Status:</Text>
@@ -42,6 +43,7 @@ const CustomerList = () => {
 	const route = useRoute();
 	const region = route.params.region;
 	const { navigate } = useNavigation();
+	const dispatch = useDispatch();
 
 	const { customers = [] } = useSelector((state) => state.customer);
 
@@ -50,13 +52,14 @@ const CustomerList = () => {
 	);
 
 	const onPressHandler = (customer) => {
+		dispatch(actions.setEditingCustomerData({ id: customer.id }));
 		navigate("EditCustomer", {
 			customer,
 		});
 	};
 
 	return (
-		<Container>
+		<Container enableScroll={false}>
 			{customersByRegion.length ? (
 				<List
 					data={customersByRegion}
