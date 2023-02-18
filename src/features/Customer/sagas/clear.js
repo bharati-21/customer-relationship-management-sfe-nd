@@ -12,7 +12,9 @@ export function* takeClearStorage() {
 		yield delay(1500);
 
 		yield clear();
+		alert("Cleared storage successfully!");
 	} catch (error) {
 		console.log(error);
+		alert("Failed to clear storage. Please try again later.");
 	}
 }
