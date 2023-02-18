@@ -5,12 +5,13 @@ import CustomerList from "../features/Customer/List";
 import CreateCustomer from "../features/Customer/New";
 import RegionsList from "../features/Regions/List";
 import Welcome from "../screens/Welcome";
+import { navigationRef } from "./NavigationService";
 
 const Navigation = () => {
 	const Stack = createNativeStackNavigator();
 
 	return (
-		<NavigationContainer>
+		<NavigationContainer ref={navigationRef}>
 			<Stack.Navigator
 				initialRouteName="Welcome"
 				screenOptions={{
