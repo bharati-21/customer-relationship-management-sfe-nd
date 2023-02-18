@@ -1,5 +1,5 @@
 import { Text } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native";
 import { buttonStyles } from "./styles";
 
 const Button = ({
