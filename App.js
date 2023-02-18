@@ -1,14 +1,15 @@
-import { SafeAreaView, ScrollView, Text, View } from "react-native";
+import { Provider } from "react-redux";
+import AppContainer from "./src/components/AppContainer";
+import initializeStore from "./src/store";
+import { useEffect } from "react";
 
 const App = () => {
+	const store = initializeStore();
+
 	return (
-		<SafeAreaView>
-			<ScrollView>
-				<View>
-					<Text>Open up App.js to start working on your app!</Text>
-				</View>
-			</ScrollView>
-		</SafeAreaView>
+		<Provider store={store}>
+			<AppContainer />
+		</Provider>
 	);
 };
 
