@@ -28,9 +28,9 @@ const RegionsList = () => {
 	const RegionText = ({ listItem }) => <Text>{listItem.name}</Text>;
 
 	return (
-		<Container>
+		<Container enableScroll={false}>
 			<Text style={styles.listHead}>Regions</Text>
-			<Text style={styles.listSubHead}>Select a region</Text>
+			<Text style={styles.listSubHead}>Click to select a region</Text>
 			<List
 				data={getRegions()}
 				onPressHandler={onPressHandler}

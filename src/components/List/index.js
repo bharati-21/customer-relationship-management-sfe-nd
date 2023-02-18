@@ -1,4 +1,4 @@
-import { TouchableOpacity, FlatList, Text, View } from "react-native";
+import { TouchableOpacity, FlatList } from "react-native";
 import { listStyles } from "./styles";
 
 const styles = listStyles();
@@ -23,6 +23,7 @@ const List = ({ data, onPressHandler, ListItemComponent }) => {
 		<FlatList
 			contentContainerStyle={styles.listContainer}
 			data={data}
+			scrollEnabled={true}
 			renderItem={({ item }) => <ListItem listItem={item} />}
 			style={styles.list}
 		/>
