@@ -7,9 +7,9 @@ const containerStyles = () =>
 			alignItems: "center",
 			height: "100%",
 			width: "100%",
-            maxWidth: 740,
-            margin: "auto",
-            padding: 20
+			maxWidth: 740,
+			margin: "auto",
+			padding: 20,
 		},
         scrollView: {
 			flexGrow: 1,
