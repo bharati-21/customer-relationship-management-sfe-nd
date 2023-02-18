@@ -1,7 +1,6 @@
 import { delay, put, select, takeLatest } from "redux-saga/effects";
 import { get } from "../../../utilities/async_storage";
 import * as actions from "../reducers";
-import { Constants } from "expo-constants";
 
 export function* watchLoadCustomers() {
 	yield takeLatest(actions.loadCustomers.toString(), takeLoadCustomers);
@@ -10,7 +9,6 @@ export function* watchLoadCustomers() {
 export function* takeLoadCustomers() {
 	try {
 		let customers = yield select((state) => state.customer.customers);
-		console.log(customers);
 		yield put(
 			actions.setCustomerResult({
 				customers,
