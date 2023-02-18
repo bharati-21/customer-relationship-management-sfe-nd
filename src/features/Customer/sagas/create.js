@@ -7,9 +7,12 @@ export function* watchCreateCustomer() {
 	yield takeLatest(actions.createNewCustomer.toString(), takeCreateCustomer);
 }
 
-export function* takeCreateCustomer({ payload }) {
+export function* takeCreateCustomer() {
 	try {
 		const customers = yield select((state) => state.customer.customers);
+		const fields = yield select(
+			(state) => state.customer.customerForm.fields
+		);
 		yield put(
 			actions.setCustomerResult({
 				customers,
@@ -23,7 +26,7 @@ export function* takeCreateCustomer({ payload }) {
 			...customers,
 			{
 				id: uuid(),
-				...payload,
+				...fields,
 			},
 		];
 		yield set("CUSTOMERS_KEY", newCustomers);
@@ -34,6 +37,8 @@ export function* takeCreateCustomer({ payload }) {
 				error: null,
 			})
 		);
+		alert("Created new customer successfully!");
+		yield put(actions.clearCustomerFormFields());
 	} catch (error) {
 		console.log(error);
 		yield put(
@@ -42,5 +47,6 @@ export function* takeCreateCustomer({ payload }) {
 				error: "Failed to create new customer. Please try again later.",
 			})
 		);
+		alert("Failed to create new customer. Please try again later.");
 	}
 }

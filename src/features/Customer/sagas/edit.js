@@ -1,14 +1,19 @@
 import { delay, put, select, takeLatest } from "redux-saga/effects";
 import { set } from "../../../utilities/async_storage";
 import * as actions from "../reducers";
+import * as RootNavigation from "../../../navigation/NavigationService";
 
 export function* watchEditCustomer() {
-	yield takeLatest(actions.editExistingCustomer.toString(), takeEditCustomer);
+	yield takeLatest(actions.editCustomer.toString(), takeEditCustomer);
 }
 
-export function* takeEditCustomer({ payload }) {
+export function* takeEditCustomer() {
 	try {
 		const customers = yield select((state) => state.customer.customers);
+		const fields = yield select(
+			(state) => state.customer.customerForm.fields
+		);
+
 		yield put(
 			actions.setCustomerResult({
 				customers,
@@ -19,7 +24,7 @@ export function* takeEditCustomer({ payload }) {
 		yield delay(1500);
 
 		const newCustomers = customers.map((customer) =>
-			customer.id === payload.id ? { ...customer, ...payload } : customer
+			customer.id === fields.id ? { ...customer, ...fields } : customer
 		);
 
 		yield set("CUSTOMERS_KEY", newCustomers);
@@ -30,6 +35,9 @@ export function* takeEditCustomer({ payload }) {
 				error: null,
 			})
 		);
+		alert("Edited customer information successfully!");
+		yield put(actions.clearCustomerFormFields());
+		RootNavigation.navigate("RegionsList");
 	} catch (error) {
 		console.log(error);
 		yield put(
@@ -38,5 +46,6 @@ export function* takeEditCustomer({ payload }) {
 				error: "Failed to create new customer. Please try again later.",
 			})
 		);
+		alert("Failed to edit customer information. Please try again later.");
 	}
 }

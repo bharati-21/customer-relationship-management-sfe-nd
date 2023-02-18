@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { View, Text, TextInput } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { getRegions } from "../../utilities/regions";
@@ -7,30 +6,32 @@ import Button from "../Button";
 import { userFormStyles } from "./styles";
 import * as actions from "../../features/Customer/reducers";
 import { Picker } from "@react-native-picker/picker";
+import useCustomerFormFields from "../../hooks/useFormData";
+import { useEffect, useState } from "react";
 
-const initialFormState = {
-	firstName: "",
-	lastName: "",
-	region: "",
-	status: "",
-};
-
-const UserForm = ({ createNew = true, data = initialFormState }) => {
-	console.log(createNew);
-	const [formData, setFormData] = useState(data);
-
-	const styles = userFormStyles();
-
+const styles = userFormStyles();
+const UserForm = ({ createNew = true }) => {
+	const { fields, setFormField } = useCustomerFormFields();
 	const dispatch = useDispatch();
+
+	const [userToBeEdited, setUserToBeEdited] = useState(actions.initialState);
 	const { loading = false, error = null } = useSelector(
 		(state) => state.customer
 	);
 
+	useEffect(() => {
+		if (createNew) {
+			if (Object.keys(fields).some((field) => field[field] !== "")) {
+				dispatch(actions.clearCustomerFormFields());
+			}
+		}
+		if (!createNew) {
+			setUserToBeEdited(fields);
+		}
+	}, []);
+
 	const changeHandler = (field, value) => {
-		setFormData((prevFormData) => ({
-			...prevFormData,
-			[field]: value,
-		}));
+		setFormField(field, value);
 	};
 
 	const hasUserSelection = () => {
@@ -47,23 +48,22 @@ const UserForm = ({ createNew = true, data = initialFormState }) => {
 
 		return (
 			isActive &&
-			(firstName.trim() !== data.firstName.trim() ||
-				lastName.trim() !== data.lastName.trim() ||
-				region.trim() !== data.region.trim() ||
-				status.trim() !== data.status.trim())
+			(firstName.trim() !== userToBeEdited.firstName.trim() ||
+				lastName.trim() !== userToBeEdited.lastName.trim() ||
+				region.trim() !== userToBeEdited.region.trim() ||
+				status.trim() !== userToBeEdited.status.trim())
 		);
 	};
 
 	const handleSubmit = () => {
 		if (createNew) {
-			dispatch(actions.createNewCustomer(formData));
-			setFormData(initialFormState);
+			dispatch(actions.createNewCustomer());
 		} else {
-			dispatch(actions.editExistingCustomer(formData));
+			dispatch(actions.editCustomer());
 		}
 	};
 
-	const { firstName, lastName, region, status } = formData;
+	const { firstName, lastName, region, status } = fields;
 
 	const ListPicker = ({ field, data, selectedItem }) => {
 		return (
