@@ -4,6 +4,7 @@ import EditCustomer from "../features/Customer/Edit";
 import CustomerList from "../features/Customer/List";
 import CreateCustomer from "../features/Customer/New";
 import RegionsList from "../features/Regions/List";
+import RemindCustomer from "../screens/RemindCustomer";
 import Welcome from "../screens/Welcome";
 import { navigationRef } from "./NavigationService";
 
@@ -26,6 +27,10 @@ const Navigation = () => {
 				/>
 				<Stack.Screen name="CustomersList" component={CustomerList} />
 				<Stack.Screen name="EditCustomer" component={EditCustomer} />
+				<Stack.Screen
+					name="RemindCustomer"
+					component={RemindCustomer}
+				/>
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
