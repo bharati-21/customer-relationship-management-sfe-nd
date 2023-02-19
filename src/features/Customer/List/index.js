@@ -1,12 +1,12 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { View, Text } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+
 import Container from "../../../components/Container";
 import List from "../../../components/List";
 import { getRegions } from "../../../utilities/regions";
 import { getUserStates } from "../../../utilities/userStates";
 import { customerListStyles } from "./styles";
-import * as actions from "../reducers";
+import { useListCustomers } from "../hooks";
 
 const styles = customerListStyles();
 
@@ -41,34 +41,37 @@ const CustomerListItem = ({ listItem: customer }) => {
 
 const CustomerList = () => {
 	const route = useRoute();
-	const region = route.params.region;
+	const regionId = route.params.regionId;
+	const regionName = route.params.regionName;
 	const { navigate } = useNavigation();
-	const dispatch = useDispatch();
-
-	const { customers = [] } = useSelector((state) => state.customer);
+	const customers = useListCustomers();
 
 	const customersByRegion = customers.filter(
-		(customer) => customer.region === region
+		(customer) => customer.region === regionId
 	);
 
 	const onPressHandler = (customer) => {
-		dispatch(actions.setEditingCustomerData({ id: customer.id }));
 		navigate("EditCustomer", {
-			customer,
+			customerId: customer.id,
 		});
 	};
 
 	return (
 		<Container enableScroll={false}>
 			{customersByRegion.length ? (
-				<List
-					data={customersByRegion}
-					title="customers"
-					ListItemComponent={CustomerListItem}
-					onPressHandler={onPressHandler}
-				/>
+				<>
+					<Text>Click customer information to edit</Text>
+					<List
+						data={customersByRegion}
+						title="customers"
+						ListItemComponent={CustomerListItem}
+						onPressHandler={onPressHandler}
+					/>
+				</>
 			) : (
-				<Text style={styles.heading}>No customers found</Text>
+				<Text style={styles.heading}>
+					No customers found for region {regionName}
+				</Text>
 			)}
 		</Container>
 	);

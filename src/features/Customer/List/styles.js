@@ -7,13 +7,13 @@ const customerListStyles = () =>
 			fontSize: 24,
 			fontWeight: "bold",
 		},
-        infoContainer: {
-            flexDirection: 'row',
-        },
-        boldText: {
-            marginRight: 5,
-            fontWeight: "bold",
-        }
+		infoContainer: {
+			flexDirection: "row",
+		},
+		boldText: {
+			marginRight: 5,
+			fontWeight: "bold",
+		},
 	});
 
 export { customerListStyles };
