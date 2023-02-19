@@ -1,54 +1,121 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { states } from "../../Constants";
+const { PENDING, REQUESTING, SUCCESS, ERROR } = states;
 
 const fieldsInitialState = {
 	firstName: "",
 	lastName: "",
 	status: "",
 	region: "",
+	id: null,
 };
 
 const initialState = {
-	customers: [],
-	error: null,
-	loading: false,
-	customerForm: {
+	list: {
+		customers: [],
+		status: PENDING,
+	},
+	create: {
+		status: PENDING,
+	},
+	edit: {
+		status: PENDING,
+		editingFields: fieldsInitialState,
+	},
+	form: {
 		fields: fieldsInitialState,
+	},
+	error: {
+		message: "",
+	},
+	clear: {
+		status: PENDING,
 	},
 };
 
 const reducers = {
-	createNewCustomer: () => {},
-	editCustomer: () => {},
-	loadCustomers: () => {},
-	clearStorage: () => {},
-	setCustomerResult: (state, action) => {
-		state.customers = action.payload.customers;
-		state.error = action.payload.error;
-		state.loading = action.payload.loading;
+	loadCustomerList: (state) => {
+		state.list.status = REQUESTING;
 	},
-	setCustomerFormField: (state, action) => {
-		const {
-			payload: { field, value },
-		} = action;
-		const currentField = state.customerForm.fields;
+	loadCustomerListResult: (state, { payload }) => {
+		state.list.status = SUCCESS;
+		state.list.customers = payload;
+	},
+	loadCustomerListError: (state, payload) => {
+		state.create.status = ERROR;
+		state.error.message = payload;
+		state.list.customers = initialState.list.customers;
+	},
+	createCustomer: (state) => {
+		state.create.status = REQUESTING;
+	},
+	createCustomerResult: (state, { payload }) => {
+		state.create.status = SUCCESS;
+		state.list.customers = payload;
+		state.form.fields = initialState.form.fields;
+	},
+	createCustomerError: (state, payload) => {
+		state.create.status = ERROR;
+		state.error.message = payload;
+		state.form.fields = initialState.form.fields;
+	},
+	setForm: (state, { payload }) => {
+		const customer = state.list.customers.find(
+			(customer) => customer.id === payload
+		);
+
+		if (customer) {
+			state.form.fields = customer;
+		} else {
+			state.error.message = `Could not find customer with id: ${id}`;
+		}
+	},
+	editCustomer: (state, { payload }) => {
+		state.edit.status = REQUESTING;
+	},
+	editCustomerResult: (state, { payload }) => {
+		state.edit.status = SUCCESS;
+		state.list.customers = payload;
+		state.form.fields = initialState.form.fields;
+	},
+	editCustomerStatus: (state, { payload }) => {
+		state.edit.editingFields = state.list.customers.find(
+			(customer) => customer.id === payload
+		);
+	},
+	editCustomerError: (state) => {
+		state.edit.status = ERROR;
+		state.error.message = payload;
+		state.form.fields = initialState.form.fields;
+	},
+	setFormField: (state, { payload: { field, value } }) => {
+		const current = state.form.fields;
 
 		const fields = {
-			...currentField,
+			...current,
 			[field]: value,
 		};
-
-		state.customerForm.fields = fields;
+		state.form.fields = fields;
 	},
-	clearCustomerFormFields: (state) => {
-		state.customerForm.fields = fieldsInitialState;
+	clearPreviousEditedForm: (state) => {
+		state.form.fields = initialState.form.fields;
+		state.edit.editingFields = initialState.edit.editingFields;
+		state.edit.status = PENDING;
 	},
-	setEditingCustomerData: (state, action) => {
-		const {
-			payload: { id },
-		} = action;
-		state.customerForm.fields = state.customers.find(
-			(customer) => customer.id === id
-		);
+	clearStorage: (state) => {
+		state.clear.status = REQUESTING;
+	},
+	clearStorageResult: (state) => {
+		state.clear.status = SUCCESS;
+		state.list = initialState.list;
+		state.edit = initialState.edit;
+		state.create = initialState.create;
+		state.form = initialState.form;
+		state.error = initialState.error;
+	},
+	clearStorageError: (state, payload) => {
+		state.error.message = payload;
+		state.clear.status = ERROR;
 	},
 };
 
@@ -59,16 +126,20 @@ const slice = createSlice({
 });
 
 export const {
-	createNewCustomer,
+	loadCustomerList,
+	loadCustomerListResult,
+	loadCustomerListError,
+	createCustomer,
+	createCustomerResult,
+	createCustomerError,
+	setForm,
 	editCustomer,
-	loadCustomers,
-	setCustomerResult,
+	editCustomerResult,
+	editCustomerStatus,
+	editCustomerError,
+	setFormField,
+	clearPreviousEditedForm,
 	clearStorage,
-	setCustomerFormField,
-	clearCustomerFormFields,
-	setEditingCustomerData,
 } = slice.actions;
-
-export { fieldsInitialState as initialState };
 
 export default slice.reducer;

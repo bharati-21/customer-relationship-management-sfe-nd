@@ -7,45 +7,29 @@ export function* watchEditCustomer() {
 	yield takeLatest(actions.editCustomer.toString(), takeEditCustomer);
 }
 
-export function* takeEditCustomer() {
-	try {
-		const customers = yield select((state) => state.customer.customers);
-		const fields = yield select(
-			(state) => state.customer.customerForm.fields
-		);
+export function* takeEditCustomer({ payload }) {
+	const customerId = payload;
 
-		yield put(
-			actions.setCustomerResult({
-				customers,
-				loading: true,
-				error: null,
-			})
+	try {
+		const customers = yield select(
+			(state) => state.customer.list.customers
 		);
+		const fields = yield select((state) => state.customer.form.fields);
+
 		yield delay(1500);
 
-		const newCustomers = customers.map((customer) =>
-			customer.id === fields.id ? { ...customer, ...fields } : customer
+		const result = customers.map((customer) =>
+			customer.id === customerId ? fields : customer
 		);
 
-		yield set("CUSTOMERS_KEY", newCustomers);
-		yield put(
-			actions.setCustomerResult({
-				customers: newCustomers,
-				loading: false,
-				error: null,
-			})
-		);
+		yield set("CUSTOMERS_KEY", result);
+		yield put(actions.editCustomerResult(result));
+
 		alert("Edited customer information successfully!");
-		yield put(actions.clearCustomerFormFields());
 		RootNavigation.navigate("RegionsList");
 	} catch (error) {
 		console.log(error);
-		yield put(
-			actions.setCustomerResult({
-				loading: false,
-				error: "Failed to create new customer. Please try again later.",
-			})
-		);
+		yield put(actions.editCustomerError(error.toString()));
 		alert("Failed to edit customer information. Please try again later.");
 	}
 }
