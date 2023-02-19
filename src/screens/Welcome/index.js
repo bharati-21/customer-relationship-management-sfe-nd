@@ -10,7 +10,7 @@ const Welcome = () => {
 	const styles = welcomeStyles();
 	const { navigate } = useNavigation();
 	const dispatch = useDispatch();
-    
+
 	const handleClearStorage = () => {
 		dispatch(actions.clearStorage());
 	};
