@@ -1,18 +1,25 @@
 import { useRoute } from "@react-navigation/native";
 import { Text } from "react-native";
 import Container from "../../../components/Container";
-import UserForm from "../../../components/UserForm";
+import Form from "../Form";
+import { useEditCustomer } from "../hooks";
 import { customerStyles } from "../styles";
 
 const EditCustomer = () => {
 	const styles = customerStyles();
+
 	const route = useRoute();
-	const { customer } = route.params;
+	const { customerId } = route.params;
+	const { status, onSubmit } = useEditCustomer(customerId);
 
 	return (
 		<Container>
 			<Text style={styles.heading}>Edit Customer</Text>
-			<UserForm createNew={false} data={customer} />
+			<Form
+				customerId={customerId}
+				callStatus={status}
+				handleSubmit={onSubmit}
+			/>
 		</Container>
 	);
 };
