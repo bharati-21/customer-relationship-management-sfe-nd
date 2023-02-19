@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { Keyboard, Text } from "react-native";
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
-import { useSelector } from "react-redux";
 import Button from "../../components/Button";
 import Container from "../../components/Container";
 import { remindCustomerStyles } from "./style";
+import { useListCustomers } from "../../features/Customer/hooks";
 
 const customer = {
 	firstName: "Jane",
@@ -49,7 +49,7 @@ const askNotification = async () => {
 const getRandomIndex = (length) => Math.floor(Math.random() * length);
 
 const RemindCustomer = () => {
-	const customers = useSelector((state) => state.customer.list.customers);
+	const customers = useListCustomers();
 	const randomCustomer =
 		customers.length > 0
 			? customers[getRandomIndex(customer.length)]
