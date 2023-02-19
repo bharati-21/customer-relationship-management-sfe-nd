@@ -8,12 +8,14 @@ const buttonStyles = (fullWidth, disabled) =>
 			borderRadius: 3,
 			marginTop: 10,
 			textAlign: "center",
+			minWidth: 150,
 		},
 		buttonContainer: {
 			width: fullWidth ? "100%" : "auto",
 		},
 		buttonText: {
 			color: disabled ? "gray" : "#fff",
+			textAlign: "center",
 		},
 	});
 
