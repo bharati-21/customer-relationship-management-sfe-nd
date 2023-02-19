@@ -17,12 +17,13 @@ const RegionsList = () => {
 
 	const onPressHandler = (value) => {
 		navigate("CustomersList", {
-			region: value.id,
+			regionId: value.id,
+			regionName: value.name,
 		});
 	};
 
 	useEffect(() => {
-		dispatch(actions.loadCustomers());
+		dispatch(actions.loadCustomerList());
 	}, []);
 
 	const RegionText = ({ listItem }) => <Text>{listItem.name}</Text>;
