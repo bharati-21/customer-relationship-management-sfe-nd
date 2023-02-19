@@ -5,32 +5,34 @@ import Button from "../../components/Button";
 import Container from "../../components/Container";
 import { welcomeStyles } from "./styles";
 import * as actions from "../../features/Customer/reducers";
-import useNotification from "../../hooks/useNotification";
 
 const Welcome = () => {
 	const styles = welcomeStyles();
 	const { navigate } = useNavigation();
 	const dispatch = useDispatch();
-	const { onShowNotification } = useNotification();
+    
 	const handleClearStorage = () => {
 		dispatch(actions.clearStorage());
 	};
 
-	const onPress = () => {
-		navigate("RegionsList");
+	const onPress = (screenName) => {
+		navigate(screenName);
 	};
 
 	return (
 		<Container>
 			<Text style={styles.heading}>Customer Relationship Management</Text>
-			<Button buttonText="Click to Continue" onPressHandler={onPress} />
+			<Button
+				buttonText="Click to Continue"
+				onPressHandler={() => onPress("RegionsList")}
+			/>
 			<Button
 				buttonText="Clear storage"
 				onPressHandler={handleClearStorage}
 			/>
 			<Button
-				buttonText={"Show Sample Notification"}
-				onPressHandler={onShowNotification}
+				buttonText={"Remind Customer"}
+				onPressHandler={() => onPress("RemindCustomer")}
 			/>
 		</Container>
 	);
