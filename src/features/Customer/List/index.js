@@ -39,7 +39,7 @@ const CustomerListItem = ({ listItem: customer }) => {
 	);
 };
 
-const CustomerList = () => {
+const CustomersList = () => {
 	const route = useRoute();
 	const regionId = route.params.regionId;
 	const regionName = route.params.regionName;
@@ -77,4 +77,4 @@ const CustomerList = () => {
 	);
 };
 
-export default CustomerList;
+export default CustomersList;
