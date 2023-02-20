@@ -52,7 +52,7 @@ const RemindCustomer = () => {
 	const customers = useListCustomers();
 	const randomCustomer =
 		customers.length > 0
-			? customers[getRandomIndex(customer.length)]
+			? customers[getRandomIndex(customers.length)]
 			: customer;
 
 	useEffect(() => {
