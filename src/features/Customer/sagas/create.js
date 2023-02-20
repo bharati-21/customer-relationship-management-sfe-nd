@@ -16,8 +16,8 @@ export function* takeCreateCustomer() {
 		const fields = yield select((state) => state.customer.form.fields);
 
 		const newCustomer = {
-			id: uuid(),
 			...fields,
+			id: uuid(),
 		};
 
 		yield delay(1500);
