@@ -3,9 +3,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import EditCustomer from "../features/Customer/Edit";
 import CustomerList from "../features/Customer/List";
 import CreateCustomer from "../features/Customer/New";
+import RemindCustomer from "../features/Customer/Remind";
 import RegionsList from "../features/Regions/List";
-import RemindCustomer from "../screens/RemindCustomer";
-import Welcome from "../screens/Welcome";
+import WelcomeScreen from "../screens/WelcomeScreen";
 import { navigationRef } from "./NavigationService";
 
 const Navigation = () => {
@@ -19,7 +19,7 @@ const Navigation = () => {
 					headerTitleAlign: "center",
 				}}
 			>
-				<Stack.Screen name="Welcome" component={Welcome} />
+				<Stack.Screen name="Welcome" component={WelcomeScreen} />
 				<Stack.Screen name="RegionsList" component={RegionsList} />
 				<Stack.Screen
 					name="CreateCustomer"
